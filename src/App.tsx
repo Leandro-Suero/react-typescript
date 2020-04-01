@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 type FormElement = React.FormEvent<HTMLFormElement>; //tipo para el formulario, submit
 interface ITask {
@@ -10,11 +10,13 @@ interface ITask {
 function App() {
     const [newTask, setNewTask] = useState<string>("");
     const [tasks, setTasks] = useState<ITask[]>([]);
+    const taskInput = useRef<HTMLInputElement>(null);
 
     const handleSubmit = (e: FormElement) => {
         e.preventDefault();
         addTask(newTask);
         setNewTask("");
+        taskInput.current?.focus();
     };
 
     const addTask = (name: string) => {
@@ -49,6 +51,7 @@ function App() {
                                     onChange={e => setNewTask(e.target.value)}
                                     value={newTask}
                                     className="form-control"
+                                    ref={taskInput}
                                 />
                                 <button
                                     className="btn btn-success btn-block mt-2"
@@ -73,7 +76,7 @@ function App() {
                                 className="btn btn-danger"
                                 onClick={() => deleteTask(i)}
                             >
-                                🗑
+                                🗑 Delete
                             </button>
                         </div>
                     ))}
